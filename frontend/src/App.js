@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import Main from "./Components/Home/Main";
-
+import PropertyList from "./Components/Home/PropertyList";
 
 function  App() {
   //manageing the routing configuration for the application
@@ -16,7 +16,9 @@ function  App() {
     //it follow the path in url
     createRoutesFromElements(
       //define all match components like '/'
-      <Route path="/" element={<Main />} exact></Route>
+      <Route path="/" element={<Main />} id="main" exact>
+<Route id="home" index element={<PropertyList />}exact/>
+</Route>
     )
   );
   return <div className="App">
