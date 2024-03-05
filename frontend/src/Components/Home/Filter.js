@@ -1,11 +1,22 @@
-import React, { useState } from "react"; // Importing React and useState hook from React library
+import React, { useEffect, useState } from "react"; // Importing React and useState hook from React library
 import FilterModal from "./FilterModal"; // Importing FilterModal component
+import { UseDispatch, useDispatch } from "react-redux";
+import { getAllProperties } from "../../Store/Property/property-action";
+import { propertyAction } from "../../Store/Property/property-slice";
 
 // Functional component Filter
 const Filter = () => {
   // State variables using useState hook
   const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
   const [selectedFilters, setSelectedFilters] = useState({}); // State for storing selected filters
+
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(propertyAction.updateSearchParams(selectedFilters));
+    dispatch(getAllProperties());
+
+  },[selectedFilters, dispatch]);
+
 
   // Function to handle opening the modal
   const handleShowAllPhotos = () => {

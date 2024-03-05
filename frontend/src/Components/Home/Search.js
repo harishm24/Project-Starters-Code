@@ -1,18 +1,41 @@
 import React, { useState } from "react";
 import { DatePicker, Space } from "antd";
+
+import { useDispatch } from "react-redux";
+import { getAllProperties } from "../../Store/Property/property-action";
+import { propertyAction } from "../../Store/Property/property-slice";
+
 const Search = () => {
   const { RangePicker } = DatePicker;
   const [keyword, setKeyword] = useState({});
-  //storing data range value
+
+  //storing the data range value
   const [value, setValue] = useState([]);
 
+  const dispatch = useDispatch();
+
+  function searchHandler(e) {
+    e.preventDefault();
+    dispatch(propertyAction.updateSearchParams(keyword));
+    dispatch(getAllProperties());
+    setKeyword({
+      city: "",
+      guests: "",
+      dateIn: "",
+      dateOut: "",
+    });
+    setValue([]);
+  }
+
   function returnDates(date, dateString) {
-    //setting date range value
+    //setting the date range value in state
     setValue([date[0], date[1]]);
-    //updating keyword with date range
+    //updating keyword object with date range.
     updateKeyword("dateIn", dateString[0]);
     updateKeyword("dateOut", dateString[1]);
   }
+
+  //function to update a specific field in the keyword state object
   const updateKeyword = (field, value) => {
     setKeyword((prevKeyword) => ({
       ...prevKeyword,
@@ -23,15 +46,18 @@ const Search = () => {
   return (
     <>
       <div className="searchbar">
-        {/* input field for dest searching */}
+        {/* Input field for searching destinations */}
         <input
           className="search"
           id="search_destination"
-          placeholder="Search Destination"
+          placeholder="Search destinations"
           type="text"
           value={keyword.city}
           onChange={(e) => updateKeyword("city", e.target.value)}
         />
+
+        {/* Date Range Picker */}
+
         <Space direction="vertical" size={12} className="search">
           <RangePicker
             value={value}
@@ -44,7 +70,9 @@ const Search = () => {
             onChange={returnDates}
           />
         </Space>
-        {/* Input field for guest adding */}
+
+        {/* Input field for adding guests */}
+
         <input
           className="search"
           id="addguest"
@@ -53,8 +81,14 @@ const Search = () => {
           value={keyword.guests}
           onChange={(e) => updateKeyword("guests", e.target.value)}
         />
-        {/* search icon */}
-        <span class="material-symbols-outlined searchicon">search</span>
+
+        {/* Search icon */}
+        <span
+          className="material-symbols-outlined searchicon"
+          onClick={searchHandler}
+        >
+          search
+        </span>
       </div>
     </>
   );
