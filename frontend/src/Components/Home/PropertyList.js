@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { getAllProperties } from "../../Store/Property/property-action";
 import { propertyAction } from "../../Store/Property/property-slice";
 
+
+
 const Card = ({ id, image, name, address, price }) => {
   return (
     <figure className="property">
