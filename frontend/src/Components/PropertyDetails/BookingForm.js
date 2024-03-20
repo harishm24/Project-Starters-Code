@@ -3,6 +3,7 @@ import moment from "moment";
 import { DatePicker, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setPaymentDetails } from "../../Store/Payment/payment-slice";
 
 const BookingForm = ({
   price,
@@ -18,10 +19,9 @@ const BookingForm = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleDateChange = (value, dateString) => {
+  const handleDataChange = (value, dateString) => {
     handleFilterChange("checkinDate", dateString[0]);
     handleFilterChange("checkoutDate", dateString[1]);
-
     const calculatedNights = moment(dateString[1], "YYYY-MM-DD").diff(
       moment(dateString[0], "YYYY-MM-DD"),
       "days"
@@ -35,7 +35,6 @@ const BookingForm = ({
   currentBookings.forEach((dates) =>
     disabledDates.push({ start: dates.fromDate, end: dates.toDate })
   );
-
   const isDateDisabled = (current) => {
     if (!disabledDates.length) {
       return current.isBefore(Date.now(), "day");
@@ -51,7 +50,6 @@ const BookingForm = ({
       });
     }
   };
-
   const handleFilterChange = (keyName, value) => {
     setPaymentData((prevData) => ({
       ...prevData,
@@ -59,12 +57,34 @@ const BookingForm = ({
     }));
   };
 
+  const handleBookPlace = (e) => {
+    e.preventDefault();
+    if (
+      userData?.name &&
+      userData?.guests &&
+      userData?.phoneNo &&
+      paymentData?.checkinDate &&
+      paymentData?.checkoutDate
+    ) {
+      dispatch(
+        setPaymentDetails({
+          ...paymentData,
+          propertyName,
+          address,
+          maximumGuest,
+        })
+      );
+      navigate(`/payment/${propertyId}`);
+    } else {
+    }
+  };
+
   return (
     <div className="form-container">
-      <form className="payment-form">
+      <form className="payment-form" onSubmit={handleBookPlace}>
         <div className="price-pernight">
           <b>&#8377;{price}</b>
-          <span> / per night</span>
+          <span> /per night</span>
         </div>
         <div className="payment-field">
           <div className="date">
@@ -72,7 +92,7 @@ const BookingForm = ({
               <RangePicker
                 format="YYYY-MM-DD"
                 disabledDate={isDateDisabled}
-                onChange={handleDateChange}
+                onChange={handleDataChange}
               />
             </Space>
           </div>
@@ -106,7 +126,6 @@ const BookingForm = ({
             />
 
             <br />
-
             <label className="payment-labels">Phone Number:</label>
             <br />
             <input
