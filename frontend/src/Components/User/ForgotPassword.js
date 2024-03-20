@@ -27,6 +27,7 @@ const ForgotPassword = () => {
                   id="email_field"
                   className="form-control"
                   value={email}
+                  required
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
