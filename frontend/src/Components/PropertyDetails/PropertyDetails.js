@@ -69,6 +69,7 @@ const PropertyDetails = () => {
             <div className="map-image-exinfo-container row">
               <div className="map-image-container col-md-6 col-sm-12 col-12">
                 <h2 className="map-header"> Where you will be</h2>
+                <MapComponent address={address} />
               </div>
               <div className="extra-info col-md-6 col-sm-12 col-12">
                 <h2 className="extra-heading">Extra Info</h2>

@@ -84,11 +84,11 @@ function App() {
             </Elements>
           }
         />
-        <Route id="mybooking" path="user/booking" element={<mybooking />} />
+        <Route id="mybooking" path="user/booking" element={<MyBookings />} />
         <Route
           id="bookingdetails"
           path="user/booking/:bookingId"
-          element={<bookingdetails />}
+          element={<BookingDetails />}
         />
       </Route>
     )
