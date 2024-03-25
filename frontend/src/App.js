@@ -1,5 +1,4 @@
 import "./App.css";
-
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -29,11 +28,13 @@ import { loadStripe } from "@stripe/stripe-js";
 import MyBookings from "./Components/Mybookings/MyBookings";
 import BookingDetails from "./Components/Mybookings/BookingDetails";
 
+import AccomodationForm from "./Components/Accomodation/AccomodationForm";
+import Accomodation from "./Components/Accomodation/Accomodation";
+
 function App() {
   const stripePromise = loadStripe(
-    "pk_test_51Ov0B2SBSy0UeRqurOr9bZsqokxKTUd7LfxisfGUxr4XiZFXXuYhH8dyAbwA02nlklHJsdLw6ybj7NjiOJfmUcUr006D2cPoAu"
+    "pk_test_51Owiog2NsbQoYGhtV9unusnVeB1ltyh5niRL7tFMfegZ7NGGr7YlsmCHwCDbOvRGg5rGhS3IJZJ1wWQU3k7qYCqb00EcqIzJqx"
   );
-
   const dispatch = useDispatch();
   const { errors } = useSelector((state) => state.user);
   useEffect(() => {
@@ -43,11 +44,8 @@ function App() {
     dispatch(currentUser());
   }, [errors, dispatch]);
 
-  //manageing the routing configuration for the application
   const router = createBrowserRouter(
-    //it follow the path in url
     createRoutesFromElements(
-      //define all match components like '/'
       <Route path="/" element={<Main />} id="main" exact>
         <Route id="home" index element={<PropertyList />} exact />
         <Route
@@ -72,7 +70,7 @@ function App() {
         />
         <Route
           id="resetpassword"
-          path="user/resetpassword"
+          path="user/resetPassword/:token"
           element={<ResetPassword />}
         />
         <Route
@@ -84,20 +82,32 @@ function App() {
             </Elements>
           }
         />
-        <Route id="mybooking" path="user/booking" element={<MyBookings />} />
+
+        <Route id="mybookings" path="user/booking" element={<MyBookings />} />
+
         <Route
           id="bookingdetails"
           path="user/booking/:bookingId"
           element={<BookingDetails />}
         />
+        <Route
+          id="accomdation"
+          path="accommodation"
+          element={<Accomodation />}
+        />
+        <Route
+          id="accomodationform"
+          path="accomodationform"
+          element={<AccomodationForm />}
+        />
       </Route>
+
     )
   );
+
   return (
     <div className="App">
-      {/*This ensure that the routering is avalible through application*/}
       <RouterProvider router={router} />
-
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
@@ -107,4 +117,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
